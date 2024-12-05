@@ -1,4 +1,3 @@
-from scipy.special import result
 from ultralytics import YOLO
 import cv2
 
