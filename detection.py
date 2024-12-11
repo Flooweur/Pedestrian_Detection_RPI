@@ -4,7 +4,8 @@ import cv2
 from flask import Flask, Response
 
 app = Flask(__name__)
-model = YOLO('yolov8n.pt', half=True)
+model = YOLO('yolov8n.pt')
+
 picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 360)
 picam2.preview_configuration.main.format = "RGB888"
