@@ -25,6 +25,7 @@ while True:
     annoted_img = results[0].plot()
     cv2.imwrite(f"{output_dir}/frame_{frame_count}.jpg", annoted_img)
     frame_count += 1
+    print("Frame count: ", frame_count)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
