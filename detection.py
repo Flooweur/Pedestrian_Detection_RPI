@@ -5,7 +5,7 @@ from flask import Flask, Response
 import time
 
 app = Flask(__name__)
-model = YOLO('yolov8n.pt')
+model = YOLO('training_output/runs/detect/train/weights/best_quantized.onnx')
 
 picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 360)
