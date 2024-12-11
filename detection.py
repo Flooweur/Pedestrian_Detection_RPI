@@ -12,22 +12,31 @@ picam2.preview_configuration.align()
 picam2.configure("preview")
 picam2.start()
 
-output_dir = "detections"
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+fps = 30
+gst_pipeline = (
+    f"appsrc ! videoconvert ! x264enc tune=zerolatency bitrate=500 speed-preset=ultrafast "
+    f"! rtph264pay config-interval=1 pt=96 ! udpsink host=127.0.0.1 port=5000"
+)
+video_writer = cv2.VideoWriter(gst_pipeline, cv2.CAP_GSTREAMER, 0, fps, (1280, 720))
 
-frame_count = 0
+if not video_writer.isOpened():
+    print("Video writer not opened")
+    exit(1)
 
 print("Starting the detection")
-while True:
-    img = picam2.capture_array()
-    results = model(source=img)
-    annoted_img = results[0].plot()
-    cv2.imwrite(f"{output_dir}/frame_{frame_count}.jpg", annoted_img)
-    frame_count += 1
-    print("Frame count: ", frame_count)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+try:
+
+    while True:
+        img = picam2.capture_array()
+        results = model(source=img)
+        annoted_img = results[0].plot()
+        print("Frame count: ", picam2.frame_count)
+        video_writer.write(annoted_img)
+except KeyboardInterrupt:
+    print("Keyboard interrupt")
+finally:
+    picam2.stop()
+    video_writer.release()
 
 print("Detection finished")
 cv2.destroyAllWindows()
