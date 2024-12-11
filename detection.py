@@ -10,11 +10,20 @@ picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 360)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.align()
-picam2.configure("preview")
+picam2.camera_controls["FrameRate"] = 30
+picam2.configure("fast")
 picam2.start()
 
+last_frame_time = 0
+fps_limit = 10
+
 def generate_frames():
+    global last_frame_time
     while True:
+        current_time = time.time()
+        if current_time - last_frame_time < 1.0/fps_limit:
+            continue
+        last_frame_time = current_time
         img = picam2.capture_array()
         results = model(source=img)
         annoted_img = results[0].plot()
@@ -29,4 +38,4 @@ def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, threaded=True)
