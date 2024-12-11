@@ -2,6 +2,7 @@ from ultralytics import YOLO
 from picamera2 import Picamera2
 import cv2
 from flask import Flask, Response
+from time import time
 
 app = Flask(__name__)
 model = YOLO('yolov8n.pt')
