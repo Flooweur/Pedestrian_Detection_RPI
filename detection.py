@@ -5,18 +5,24 @@ from flask import Flask, Response
 import time
 
 app = Flask(__name__)
-model = YOLO('training_output/runs/detect/train/weights/best_quantized.onnx')
+# model = YOLO('training_output/runs/detect/train/weights/best_quantized.onnx')
+
+import onnxruntime as ort
+model = ort.InferenceSession('training_output/runs/detect/train/weights/best_quantized.onnx', providers=['OpenVINOExecutionProvider'])
+
+# model = YOLO('training_output/runs/detect/train/weights/best.pt')
+# model = YOLO('best.pt')
 
 picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 360)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.align()
-picam2.camera_controls["FrameRate"] = 30
+picam2.camera_controls["FrameRate"] = 60
 picam2.configure("fast")
 picam2.start()
 
 last_frame_time = 0
-fps_limit = 10
+fps_limit = 60
 
 def generate_frames():
     global last_frame_time
@@ -26,6 +32,11 @@ def generate_frames():
             continue
         last_frame_time = current_time
         img = picam2.capture_array()
+
+        # Added by Samy
+        if img.shape[2] == 4:
+            img = cv2.cvtColor(img, cv2.COLOR_RGBA2RGB)
+
         results = model(source=img)
         annoted_img = results[0].plot()
         ret, buffer = cv2.imencode('.jpg', annoted_img)

@@ -4258,12 +4258,21 @@ $/model.21/m.0/cv2/conv/Conv_output_0
 
 
 
-ÐABr
+ÐABB
 
-onnx.inferonnxruntime.quantrS
+ai.onnx.mlB
+ai.onnx.trainingB
+ai.onnx.preview.trainingB
+com.microsoftB
+com.microsoft.experimentalB
+com.microsoft.nchwcB
+org.pytorch.atenr
+
+onnx.inferonnxruntime.quantr+
+onnx.quant.pre_processonnxruntime.quantrS
 descriptionDUltralytics best model trained on /kaggle/input/cityperson/data.yamlr
 authorUltralyticsr"
-date2024-12-11T16:38:47.774138r
+date2024-12-14T18:19:23.482220r
 version8.3.40r=
 license2AGPL-3.0 License (https://ultralytics.com/license)r$
 docshttps://docs.ultralytics.comr
