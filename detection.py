@@ -6,12 +6,9 @@ import time
 
 app = Flask(__name__)
 # model = YOLO('training_output/runs/detect/train/weights/best_quantized.onnx')
-
-import onnxruntime as ort
-model = ort.InferenceSession('training_output/runs/detect/train/weights/best_quantized.onnx', providers=['OpenVINOExecutionProvider'])
+model = YOLO('training_output/runs/detect/train/weights/model_pruned.pt')
 
 # model = YOLO('training_output/runs/detect/train/weights/best.pt')
-# model = YOLO('best.pt')
 
 picam2 = Picamera2()
 picam2.preview_configuration.main.size = (640, 360)
