@@ -27,7 +27,7 @@ if __name__ == "__main__":
     
     try:
         model = torch.load(args.input_model)
-        pruning_param = 0.3
+        pruning_param = 0.2
 
         for name, m in model['model'].named_modules():
             if isinstance(m, nn.Conv2d) or isinstance(m, torch.nn.Linear):
