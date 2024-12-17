@@ -56,7 +56,7 @@ if __name__ == "__main__":
         preprocess_onnx_model(args.input_model)
         quantize_model(args.quantized_path)
     except subprocess.CalledProcessError as e:
-        print(f"Error when executing the following commande : {e}")
+        print(f"Error when executing the following command : {e}")
     except Exception as e:
         print(f"An unexpected error happened : {e}")
     else:
