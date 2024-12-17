@@ -1,4 +1,3 @@
-import subprocess
 import time
 import argparse
 import torch, torch.nn as nn
@@ -18,22 +17,6 @@ def sparsity(model):
     return b / a
 
 
-# model = torch.load("training_output/runs/detect/train/weights/best.pt")
-# pruning_param = 0.3
-
-# for name, m in model['model'].named_modules():
-#     if isinstance(m, nn.Conv2d) or isinstance(m, torch.nn.Linear):
-#         prune.l1_unstructured(m, name='weight', amount=pruning_param)  # prune
-#         prune.remove(m, 'weight')  # make permanent
-
-# print(f"Model pruned to {sparsity(model['model']):.3g} global sparsity")
-
-# torch.save(model, 'training_output/runs/detect/train/weights/model_pruned.pt')
-
-
-
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pipeline to prune a YOLOv8n model.")
     parser.add_argument("--input_model", type=str, required=True, help="YOLOv8n weights path as input (ex: yolov8n.pt)")
@@ -48,14 +31,12 @@ if __name__ == "__main__":
 
         for name, m in model['model'].named_modules():
             if isinstance(m, nn.Conv2d) or isinstance(m, torch.nn.Linear):
-                prune.l1_unstructured(m, name='weight', amount=pruning_param)  # prune
-                prune.remove(m, 'weight')  # make permanent
+                prune.l1_unstructured(m, name='weight', amount=pruning_param)
+                prune.remove(m, 'weight')
 
         print(f"Model pruned to {sparsity(model['model']):.3g} global sparsity")
 
         torch.save(model, args.output_path)
-    except subprocess.CalledProcessError as e:
-        print(f"Error when executing the following command : {e}")
     except Exception as e:
         print(f"An unexpected error happened : {e}")
     else:
