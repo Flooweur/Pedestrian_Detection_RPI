@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     
-    model = YOLO('training_output/runs/detect/train/weights/best_quantized.onnx')
+    model = YOLO(args.input_model)
 
     camera = Picamera2()
     camera.configure(camera.create_preview_configuration(main={"format": "RGB888", "size": (640, 360)}, controls={"FrameRate": 60}))
