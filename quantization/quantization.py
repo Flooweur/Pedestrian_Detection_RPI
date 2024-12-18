@@ -19,6 +19,7 @@ def preprocess_onnx_model(input_file):
     """Step 2: Pre-processing of the ONNX model for quantization."""
 
     print("Step 2: Pre-processing of the ONNX model for quantization...")
+    print(input_file.split('.pt')[0])
 
     command = [
         "../venv/Scripts/python", "-m", "onnxruntime.quantization.preprocess",
